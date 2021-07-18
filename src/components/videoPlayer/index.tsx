@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react"
-import Controls from "./Controls"
+import React, { useState, useEffect, useRef } from 'react'
+import Controls from './Controls'
 
 interface IProps {
   url: string
@@ -19,14 +19,10 @@ interface IProps {
   onMarkerClick?: (marker: object) => void
 }
 
-const DEFAULT_VOLUME: number = 0.7
-
 function VideoPlayer(props: IProps) {
-  const playerEl = useRef<HTMLVideoElement>(document.createElement("video"))
-  const progressEl = useRef<HTMLProgressElement>(
-    document.createElement("progress")
-  )
-  const volumeEl = useRef<any>(null)
+  const playerRef = useRef<HTMLVideoElement>(document.createElement('video'))
+  const progressRef = useRef<HTMLInputElement>(document.createElement('input'))
+  const videoWrapRef = useRef<HTMLDivElement>(document.createElement('div'))
 
   const [currentTime, setCurrentTime] = useState<number>(0)
   const [videoDuration, setVideoDuration] = useState<number>(0)
@@ -35,9 +31,9 @@ function VideoPlayer(props: IProps) {
 
   const {
     url,
-    controls = ["play", "time", "progress", "volume", "full-screen"],
-    height = "360px",
-    width = "640px",
+    controls = ['play', 'time', 'progress', 'volume', 'full-screen'],
+    height = '360px',
+    width = '640px',
     isPlaying = false,
     volume = 0.7,
     loop = false,
@@ -52,22 +48,14 @@ function VideoPlayer(props: IProps) {
   } = props
 
   useEffect(() => {
-    playerEl.current.addEventListener("timeupdate", handleProgress)
-    playerEl.current.addEventListener("durationchange", handleDurationLoaded)
+    playerRef.current.addEventListener('timeupdate', handleProgress)
+    playerRef.current.addEventListener('durationchange', handleDurationLoaded)
     if (timeStart) {
       seekToPlayer()
     }
     if (isPlaying) {
-      playerEl.current.play()
+      playerRef.current.play()
     }
-
-    // return () => {
-    //   playerEl.current.removeEventListener("timeupdate", handleProgress)
-    //   playerEl.current.removeEventListener(
-    //     "durationchange",
-    //     handleDurationLoaded
-    //   )
-    // }
   }, [])
 
   useEffect(() => {
@@ -75,7 +63,7 @@ function VideoPlayer(props: IProps) {
   }, [timeStart])
 
   useEffect(() => {
-    isPlaying ? playerEl.current.play() : playerEl.current.pause()
+    isPlaying ? playerRef.current.play() : playerRef.current.pause()
   }, [isPlaying])
 
   useEffect(() => {
@@ -83,13 +71,13 @@ function VideoPlayer(props: IProps) {
   }, [volume])
 
   const seekToPlayer = () => {
-    if (timeStart && playerEl) {
-      playerEl.current.currentTime = timeStart
+    if (timeStart && playerRef) {
+      playerRef.current.currentTime = timeStart
     }
   }
 
   const setVolume = (value: number) => {
-    playerEl.current.volume = value
+    playerRef.current.volume = value
     setMuted(!value)
     onVolume(value)
   }
@@ -104,7 +92,7 @@ function VideoPlayer(props: IProps) {
 
   const handleDurationLoaded = (e: Event) => {
     const { currentTarget }: any = e
-    let duration = currentTarget["duration"]
+    let duration = currentTarget['duration']
     if (duration === Infinity) {
       duration = 0
     }
@@ -114,13 +102,15 @@ function VideoPlayer(props: IProps) {
 
   const handleProgress = (e: Event) => {
     const { currentTarget }: any = e
-    const currentTime = currentTarget["currentTime"]
-    const duration = currentTarget["duration"]
+    const currentTime = currentTarget['currentTime']
+    const duration = currentTarget['duration']
     if (duration) {
       setCurrentTime(currentTime)
       const percentage = (100 / duration) * currentTime
-      progressEl.current.value = percentage
-      progressEl.current.innerHTML = percentage + "% played"
+      if (progressRef) {
+        progressRef.current.value = percentage.toString()
+        progressRef.current.innerHTML = percentage + '% played'
+      }
       if (currentTime === duration) {
         onPause()
       }
@@ -130,88 +120,62 @@ function VideoPlayer(props: IProps) {
 
   const handleProgressClick = (e: Event) => {
     const { clientX }: any = e
-    const x =
-      clientX -
-      progressEl.current.getBoundingClientRect().left +
-      document.body.scrollLeft
+    const x = clientX - progressRef.current.getBoundingClientRect().left
     const percentage =
-      (x * progressEl.current.max) / progressEl.current.offsetWidth
-    playerEl.current.currentTime =
-      (percentage / 100) * playerEl.current.duration
-  }
-
-  const handleVolumeClick = (e: Event) => {
-    const { clientY }: any = e
-    const y =
-      volumeEl.current.offsetWidth -
-      (clientY -
-        volumeEl.current.getBoundingClientRect().top +
-        document.body.scrollTop)
-    const percentage = (y * volumeEl.current.max) / volumeEl.current.offsetWidth
-    playerEl.current.muted = false
-    onVolume(percentage / 100)
-  }
-
-  const handleMuteClick = () => {
-    if (muted) {
-      playerEl.current.muted = false
-      setVolume(DEFAULT_VOLUME)
-      setMuted(false)
-    } else {
-      playerEl.current.muted = true
-      setVolume(0)
-      setMuted(true)
-    }
+      (x * Number(progressRef.current.max)) / progressRef.current.offsetWidth
+    playerRef.current.currentTime =
+      (percentage / 100) * playerRef.current.duration
   }
 
   const handleFullScreenClick = () => {
-    const videoWrap = document.getElementsByClassName("react-video-wrap")[0]
+    // const videoWrap = document.getElementsByClassName('react-video-wrap')[0]
+    const { mozCancelFullScreen, webkitExitFullscreen, msExitFullscreen }: any =
+      videoWrapRef
     if (isFullScreen) {
-      document.body.classList.remove("react-video-full-screen")
-      if (document["exitFullscreen"]) {
-        document["exitFullscreen"]()
+      videoWrapRef.current.classList.remove('react-video-full-screen')
+      if (document['exitFullscreen']) {
+        document['exitFullscreen']()
+      } else if (mozCancelFullScreen) {
+        mozCancelFullScreen()
+      } else if (webkitExitFullscreen) {
+        webkitExitFullscreen()
+      } else if (msExitFullscreen) {
+        msExitFullscreen()
       }
-      // else if (document["mozCancelFullScreen"]) {
-      //   document["mozCancelFullScreen"]()
-      // } else if (document["webkitExitFullscreen"]) {
-      //   document["webkitExitFullscreen"]()
-      // } else if (document["msExitFullscreen"]) {
-      //   document["msExitFullscreen"]()
-      // }
     } else {
-      document.body.classList.add("react-video-full-screen")
-      if (videoWrap["requestFullscreen"]) {
-        videoWrap["requestFullscreen"]()
+      videoWrapRef.current.classList.add('react-video-full-screen')
+      const {
+        mozRequestFullScreen,
+        webkitRequestFullscreen,
+        msRequestFullscreen,
+      }: any = videoWrapRef
+      if (videoWrapRef.current['requestFullscreen']) {
+        videoWrapRef.current['requestFullscreen']()
+      } else if (mozRequestFullScreen) {
+        mozRequestFullScreen()
+      } else if (webkitRequestFullscreen) {
+        webkitRequestFullscreen()
+      } else if (msRequestFullscreen) {
+        msRequestFullscreen()
       }
-      // else if (videoWrap["mozRequestFullScreen"]) {
-      //   videoWrap["mozRequestFullScreen"]()
-      // } else if (videoWrap["webkitRequestFullscreen"]) {
-      //   videoWrap["webkitRequestFullscreen"]()
-      // } else if (videoWrap["msRequestFullscreen"]) {
-      //   videoWrap["msRequestFullscreen"]()
-      // }
     }
     setIsFullScreen(!isFullScreen)
   }
 
   const handleMarkerClick = (marker: any) => {
-    playerEl.current.currentTime = marker["time"]
+    playerRef.current.currentTime = marker['time']
     onMarkerClick(marker)
   }
 
-  const handleFastForwardClick = () => {
-    playerEl.current.currentTime = playerEl.current.currentTime + 5
-  }
-
-  const handleRewindClick = () => {
-    playerEl.current.currentTime = playerEl.current.currentTime - 5
-  }
-
   return (
-    <div className="react-video-wrap" style={{ height, width }}>
+    <div
+      ref={videoWrapRef}
+      className="react-video-wrap"
+      style={{ height, width }}
+    >
       <video
         crossOrigin="anonymous"
-        ref={playerEl}
+        ref={playerRef}
         className="react-video-player"
         loop={loop}
         onClick={handlePlayerClick}
@@ -232,12 +196,13 @@ function VideoPlayer(props: IProps) {
       ) : null}
       {controls.length ? (
         <Controls
-          playerEl={playerEl}
-          progressEl={progressEl}
-          volumeEl={volumeEl}
+          playerRef={playerRef}
+          progressRef={progressRef}
           controls={controls}
           isPlaying={isPlaying}
           volume={volume}
+          setVolume={setVolume}
+          setMuted={setMuted}
           currentTime={currentTime}
           duration={videoDuration}
           muted={muted}
@@ -245,11 +210,7 @@ function VideoPlayer(props: IProps) {
           onPlayClick={onPlay}
           onPauseClick={onPause}
           onProgressClick={handleProgressClick}
-          onVolumeClick={handleVolumeClick}
-          onMuteClick={handleMuteClick}
           onFullScreenClick={handleFullScreenClick}
-          onRewindClick={handleRewindClick}
-          onFastForwardClick={handleFastForwardClick}
           onMarkerClick={handleMarkerClick}
         />
       ) : null}

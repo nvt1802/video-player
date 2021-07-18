@@ -11,24 +11,25 @@
 }
 
 .react-video-controls {
-  visibility: hidden;
+  /* visibility: hidden; */
   background-color: transparent;
   display: flex;
   height: 36px;
   padding: 0 7px;
   position: absolute;
-  bottom: 0em;
+  /* bottom: 0em; */
+  bottom: 3em;
   left: 0;
   right: 0;
 }
 
-video:hover ~ .react-video-controls {
+/* video:hover ~ .react-video-controls {
   visibility: visible;
   bottom: 2em;
   transition: 200ms;
-}
+} */
 
-.react-video-controls:hover {
+/* .react-video-controls:hover {
   visibility: visible;
   bottom: 2em;
   transition: 200ms;
@@ -38,7 +39,15 @@ video:hover ~ .react-video-controls {
   visibility: visible;
   bottom: 2em;
   transition: 200ms;
+} */
+
+/* video:hover ~ .react-video-close {
+  visibility: visible;
 }
+
+.react-video-close:hover {
+  visibility: visible;
+} */
 
 .react-video-captions {
   visibility: visible;
@@ -77,38 +86,38 @@ video:hover ~ .react-video-controls {
 }
 
 .react-video-controls .play {
-  background-image: url("./images/plyr-play.svg");
+  background-image: url('./images/plyr-play.svg');
 }
 
 .react-video-controls .pause {
-  background-image: url("./images/plyr-pause.svg");
+  background-image: url('./images/plyr-pause.svg');
   background-size: 15px;
 }
 
 .react-video-controls .volume {
-  background-image: url("./images/plyr-volume.svg");
+  background-image: url('./images/plyr-volume.svg');
   background-position-x: 0;
   width: 17px;
 }
 
 .react-video-controls .no-volume {
-  background-image: url("./images/plyr-muted.svg");
+  background-image: url('./images/plyr-muted.svg');
   background-position-x: 0;
   width: 17px;
 }
 
 .react-video-controls .full-screen {
-  background-image: url("./images/plyr-enter-fullscreen.svg");
+  background-image: url('./images/plyr-enter-fullscreen.svg');
   width: 17px;
 }
 
 .react-video-controls .rewind {
-  background-image: url("./images/plyr-rewind.svg");
+  background-image: url('./images/plyr-rewind.svg');
   width: 17px;
 }
 
 .react-video-controls .fast-forward {
-  background-image: url("./images/plyr-fast-forward.svg");
+  background-image: url('./images/plyr-fast-forward.svg');
   width: 17px;
 }
 
@@ -125,6 +134,12 @@ video:hover ~ .react-video-controls {
   cursor: pointer;
 }
 
+.progress-wrap {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .react-video-controls .progress-wrap {
   flex-grow: 1;
   margin: 2px 7px 0;
@@ -132,16 +147,59 @@ video:hover ~ .react-video-controls {
 }
 
 .react-video-controls .progress-wrap progress {
-  height: 8px;
   width: 100%;
 }
 
-.react-video-controls .progress-wrap progress::-webkit-progress-value {
-  background: #28c0f0;
+.react-video-controls .progress-wrap .progress-loaded {
+  position: relative;
+  z-index: 2;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 15px;
+  height: 10px;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
 }
 
-.react-video-controls .progress-wrap progress::-webkit-progress-bar {
-  background: #ffffff;
+/* input[type='range'] {
+  overflow: hidden;
+  width: 80px;
+  -webkit-appearance: none;
+} */
+
+/* input[type='range']::-webkit-slider-runnable-track {
+  height: 10px;
+  -webkit-appearance: none;
+  color: #13bba4;
+  margin-top: -1px;
+} */
+
+/* input[type='range']::-webkit-slider-thumb {
+  width: 8px;
+  -webkit-appearance: none;
+  height: 8px;
+  cursor: pointer;
+  background: #434343;
+  background: black;
+  border-radius: 20px;
+} */
+
+.react-video-controls .progress-wrap .progress-buffered {
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 15px;
+  height: 10px;
+  left: 0;
+  /* margin-top: calc((var(--plyr-range-track-height, 5px) / 2) * -1); */
+  padding: 0;
+  position: absolute;
+}
+
+.react-video-controls .progress-wrap .progress-buffered {
+  background: #28c0f0;
 }
 
 .react-video-controls .progress-wrap .react-video-marker {
@@ -202,7 +260,8 @@ video:hover ~ .react-video-controls {
 }
 
 .react-video-full-screen .react-video-close {
-  background: url("./images/close-video.svg") no-repeat transparent;
+  visibility: hidden;
+  background: url('./images/close-video.svg') no-repeat transparent;
   border: 0;
   cursor: pointer;
   opacity: 1;
@@ -220,23 +279,23 @@ video:hover ~ .react-video-controls {
 }
 
 .react-video-full-screen .react-video-controls .play {
-  background-image: url("./images/plyr-play.svg");
+  background-image: url('./images/plyr-play.svg');
 }
 
 .react-video-full-screen .react-video-controls .pause {
-  background-image: url("./images/plyr-pause.svg");
+  background-image: url('./images/plyr-pause.svg');
 }
 
 .react-video-full-screen .react-video-controls .volume {
-  background-image: url("./images/plyr-volume.svg");
+  background-image: url('./images/plyr-volume.svg');
 }
 
 .react-video-full-screen .react-video-controls .no-volume {
-  background-image: url("./images/plyr-muted.svg");
+  background-image: url('./images/plyr-muted.svg');
 }
 
 .react-video-full-screen .react-video-controls .full-screen {
-  background-image: url("./images/plyr-exit-fullscreen.svg");
+  background-image: url('./images/plyr-exit-fullscreen.svg');
 }
 
 .react-video-full-screen .react-video-controls .time {

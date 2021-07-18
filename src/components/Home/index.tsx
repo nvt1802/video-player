@@ -1,8 +1,8 @@
-import React, { Fragment } from "react"
-import dynamic from "next/dynamic"
-import { useState } from "react"
+import React, { Fragment } from 'react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
 // import VideoPlayer from "../videoPlayer"
-const VideoPlayer = dynamic(() => import("../videoPlayer"), { ssr: false })
+const VideoPlayer = dynamic(() => import('../videoPlayer'), { ssr: false })
 // import VideoPlayer from "../videoPlayer"
 
 const HomeComponent = () => {
@@ -13,8 +13,8 @@ const HomeComponent = () => {
     {
       id: 1,
       time: 5,
-      color: "#ffc837",
-      title: "Marker 1",
+      color: '#ffc837',
+      title: 'Marker 1',
     },
   ]
 
@@ -34,17 +34,17 @@ const HomeComponent = () => {
     <Fragment>
       <VideoPlayer
         controls={[
-          "play",
-          "rewind",
-          "fast-forward",
-          "time",
-          "progress",
-          "volume",
-          "full-screen",
+          'play',
+          'rewind',
+          'fast-forward',
+          'time',
+          'progress',
+          'volume',
+          'full-screen',
         ]}
         isPlaying={playing}
-        markers={markers}
-        url="http://localhost:4000/download"
+        // markers={markers}
+        url="http://localhost:4000/video"
         volume={volume}
         loop={true}
         width="800px"
