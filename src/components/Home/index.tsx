@@ -40,6 +40,7 @@ const HomeComponent = () => {
           'time',
           'progress',
           'volume',
+          'pip',
           'full-screen',
         ]}
         isPlaying={playing}

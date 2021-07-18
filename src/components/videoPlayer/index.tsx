@@ -24,6 +24,7 @@ function VideoPlayer(props: IProps) {
   const progressRef = useRef<HTMLInputElement>(document.createElement('input'))
   const videoWrapRef = useRef<HTMLDivElement>(document.createElement('div'))
 
+  const [loadedMetaData, setLoadedMetaData] = useState<boolean>(false)
   const [currentTime, setCurrentTime] = useState<number>(0)
   const [videoDuration, setVideoDuration] = useState<number>(0)
   const [muted, setMuted] = useState<boolean>(false)
@@ -49,6 +50,7 @@ function VideoPlayer(props: IProps) {
 
   useEffect(() => {
     playerRef.current.addEventListener('timeupdate', handleProgress)
+    playerRef.current.addEventListener('loadedmetadata', handleLoadedmetadata)
     playerRef.current.addEventListener('durationchange', handleDurationLoaded)
     if (timeStart) {
       seekToPlayer()
@@ -98,6 +100,10 @@ function VideoPlayer(props: IProps) {
     }
     setVideoDuration(duration)
     onDuration(duration)
+  }
+
+  const handleLoadedmetadata = () => {
+    setLoadedMetaData(true)
   }
 
   const handleProgress = (e: Event) => {
@@ -174,6 +180,7 @@ function VideoPlayer(props: IProps) {
       style={{ height, width }}
     >
       <video
+        id="react-video-player"
         crossOrigin="anonymous"
         ref={playerRef}
         className="react-video-player"
@@ -194,7 +201,7 @@ function VideoPlayer(props: IProps) {
           Close video
         </button>
       ) : null}
-      {controls.length ? (
+      {loadedMetaData && controls.length ? (
         <Controls
           playerRef={playerRef}
           progressRef={progressRef}

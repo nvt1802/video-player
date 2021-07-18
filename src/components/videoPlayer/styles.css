@@ -121,6 +121,11 @@
   width: 17px;
 }
 
+.react-video-controls .pip {
+  background-image: url('./images/plyr-pip.svg');
+  width: 17px;
+}
+
 .react-video-controls .time {
   color: #fff;
   font-size: 10px;
@@ -296,6 +301,10 @@
 
 .react-video-full-screen .react-video-controls .full-screen {
   background-image: url('./images/plyr-exit-fullscreen.svg');
+}
+
+.react-video-full-screen .react-video-controls .pip {
+  background-image: url('./images/plyr-pip.svg');
 }
 
 .react-video-full-screen .react-video-controls .time {
