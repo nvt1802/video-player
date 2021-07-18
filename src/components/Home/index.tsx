@@ -32,28 +32,31 @@ const HomeComponent = () => {
 
   return (
     <Fragment>
-      <VideoPlayer
-        controls={[
-          'play',
-          'rewind',
-          'fast-forward',
-          'time',
-          'progress',
-          'volume',
-          'pip',
-          'full-screen',
-        ]}
-        isPlaying={playing}
-        // markers={markers}
-        url="http://localhost:4000/video"
-        volume={volume}
-        loop={true}
-        width="800px"
-        height="100%"
-        onPlay={handleClickPlay}
-        onPause={handleClickPause}
-        onVolume={handleChangeVolume}
-      />
+      <div style={{ width: '100%', margin: '10% 0 0 10%' }}>
+        <VideoPlayer
+          controls={[
+            'play',
+            'rewind',
+            'fast-forward',
+            'time',
+            'progress',
+            'volume',
+            'settings',
+            'pip',
+            'full-screen',
+          ]}
+          isPlaying={playing}
+          // markers={markers}
+          url="http://localhost:4000/video"
+          volume={volume}
+          loop={true}
+          width="800px"
+          height="100%"
+          onPlay={handleClickPlay}
+          onPause={handleClickPause}
+          onVolume={handleChangeVolume}
+        />
+      </div>
     </Fragment>
   )
 }

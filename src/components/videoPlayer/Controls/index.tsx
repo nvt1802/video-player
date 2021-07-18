@@ -9,6 +9,7 @@ import Progress from './Progress'
 import Volume from './Volume'
 import FullScreen from './FullScreen'
 import Pip from './Pip'
+import Settings from './Settings'
 
 interface IProps {
   playerRef: any
@@ -122,6 +123,8 @@ function Controls(props: IProps) {
           volume={volume}
         />
       ) : null}
+
+      {controls.includes('settings') ? <Settings /> : null}
 
       {controls.includes('pip') ? <Pip PlayerRef={playerRef} /> : null}
 
